@@ -17,12 +17,12 @@ require_once get_stylesheet_directory() . '/includes/motoraldia-query.php';
 require_once get_stylesheet_directory() . '/includes/motoraldia-rewrite.php';
 require_once get_stylesheet_directory() . '/includes/motoraldia-api-as-cpt.php';
 
-// Asegurarnos de que los tags se cargan después de Bricks
+// Cargar los tags después de que Bricks esté listo
 add_action('init', function() {
-    if (class_exists('Bricks\Elements')) {
+    if (class_exists('Bricks\Database')) {
         require_once get_stylesheet_directory() . '/includes/motoraldia-tags.php';
     }
-}, 20);
+}, 20); // Cambiar a prioridad 20 para asegurar que Bricks está cargado
 
 /**
  * Register custom elements
@@ -194,4 +194,12 @@ add_shortcode('motoraldia_vehicles', function($atts) {
     ob_start();
     motoraldia_display_vehicles_loop($atts['items']);
     return ob_get_clean();
+});
+
+// Asegurar que los datos del vehículo estén disponibles globalmente
+add_action('template_redirect', function() {
+    if (get_query_var('vehicle_slug')) {
+        global $current_post_vehicle;
+        $current_post_vehicle = get_current_vehicle_data();
+    }
 });
