@@ -49,6 +49,17 @@ function motoraldia_display_vehicles_loop($number_of_items = -1) {
                 <div class="vehicle-seller"><?php echo ucfirst($seller_type); ?></div>
                 <a href="<?php echo $detail_url; ?>" class="vehicle-button">Ver detalles</a>
             </div>
+            <div class="vehicle-details">
+                <h3><?php echo esc_html($vehicle['titol-anunci']); ?></h3>
+                <p class="vehicle-price"><?php echo number_format($vehicle['preu'], 0, ',', '.'); ?> €</p>
+                <?php if (!empty($vehicle['quilometratge'])): ?>
+                    <p class="vehicle-mileage"><?php echo number_format($vehicle['quilometratge'], 0, ',', '.'); ?> km</p>
+                <?php endif; ?>
+                <?php if (!empty($vehicle['any'])): ?>
+                    <p class="vehicle-year"><?php echo esc_html($vehicle['any']); ?></p>
+                <?php endif; ?>
+                <a href="<?php echo get_vehicle_permalink($vehicle['id']); ?>" class="vehicle-detail-button">Ver Detalles</a>
+            </div>
         </div>
         <?php
     }
@@ -150,6 +161,26 @@ add_action('wp_head', function() {
         }
         
         .vehicle-button:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .vehicle-detail-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .vehicle-detail-button:hover {
             background: #2980b9;
             transform: translateY(-2px);
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
